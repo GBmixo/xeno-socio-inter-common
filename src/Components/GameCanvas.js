@@ -1,14 +1,16 @@
 import React from 'react';
+import CheckClickCollision from './CheckClickCollision.js';
 
 
 class GameCanvas extends React.Component{
 
     componentDidMount = () => {
         //Renders the canvas with game objects
-        this.renderCanvasObjects();
+        this.prepareCanvasObjects();
     }
 
-    renderCanvasObjects = () => {
+    prepareCanvasObjects = () => {
+        console.log('preparing to render');
         //console.log(this.props);
         //The reference to the canvas and other info tied to variables
         const canvas = this.refs.canvas;
@@ -24,38 +26,48 @@ class GameCanvas extends React.Component{
             object.x = (e.clientX - rect.left);
             object.y =  (e.clientY - rect.top);
             //Calculates whether the click touched an object
-            this.checkCollision(object.x, object.y);
+            let collision = CheckClickCollision(this.props.levelObjects, object.x, object.y);
+            this.checkContext(collision[0], collision[1])
         })
 
+        this.renderCanvasObjects(ctx)
+        this.renderDialog(ctx);
+        
+    }
+
+    renderCanvasObjects = (ctx) => {
         this.props.levelObjects.map(obj => {
 
             //Seperates the data into individual numbers
             let pos = obj.position.split(' ');
             let dimensions = obj.size.split(' ');
+
             //Sets the rectangle color
-            ctx.fillStyle = "#FFFF33";
+            if(obj.color){
+                ctx.fillStyle = obj.color;
+            }else{
+                ctx.fillStyle = "#FFFF33";
+            }
+            
             //Creates a rectangle with the fillStyle
             ctx.fillRect(pos[0],pos[1],dimensions[0],dimensions[1]);
         })
-        
+    }
+
+    renderDialog = (ctx, text, position, fontSize="30px", font="Arial") => {
+        let worldState = this.props.worldState;
+        console.log(this.props.worldState);
+        if(worldState.dialogBox){
+            //console.log(worldState.dialogBox);
+            console.log("page: " + worldState.dialogCurrent);
+        }
+
+        //ctx.font = fontSize + " " + font;
+        //ctx.fillText(text, position[0], position[1]);
     }
 
     setBackground = (canvas, backgroundColor) => {
         canvas.style.background = backgroundColor;
-    }
-
-    checkCollision = (clickX, clickY) => {
-        //console.log(clickX + ' ' + clickY)
-        let objects = this.props.levelObjects;
-        for(let i = 0; i < objects.length; i++){
-            let pos = objects[i].position.split(' ');
-            let size = objects[i].size.split(' ');
-            //Compares the click to the dimensions of the rectangle
-            if( (clickX > pos[0]) && (clickX < parseInt(pos[0]) + parseInt( size[0])) && (clickY > pos[1]) && (clickY < parseInt(pos[1]) + parseInt(size[1])) ){
-                console.log('hit ' + objects[i].name);
-                this.checkContext(i, objects[i]);
-            }
-        }
     }
 
     checkContext = (index, object) => {
@@ -65,6 +77,8 @@ class GameCanvas extends React.Component{
             case "read": this.props.onClick(index, 'read')
             break;
             case "pickup": this.props.onClick(index, 'pickup')
+            break;
+            case "dialogue": this.props.onClick(index, 'dialogue')
             break; 
             default: this.props.onClick(index, "impossible")
         }
@@ -80,6 +94,11 @@ class GameCanvas extends React.Component{
     
 }
 /*
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+ctx.font = "30px Arial";
+ctx.fillText("Hello World", 10, 50);
+
                 if( (clickX > parseInt(coords[1])) && (clickX < (parseInt(coords[1]) + noteCollection[note].width)) ){
                     if(noteCollection[note].status == true){
                         this.props.noteHit(note, songId)
