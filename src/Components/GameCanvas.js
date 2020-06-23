@@ -31,7 +31,7 @@ class GameCanvas extends React.Component{
         })
 
         this.renderCanvasObjects(ctx)
-        this.renderDialog(ctx);
+        this.renderDialog(ctx, this.props.worldState.dialogBox[this.props.worldState.dialogCurrent], [30, 30]);
         
     }
 
@@ -57,13 +57,18 @@ class GameCanvas extends React.Component{
     renderDialog = (ctx, text, position, fontSize="30px", font="Arial") => {
         let worldState = this.props.worldState;
         console.log(this.props.worldState);
-        if(worldState.dialogBox){
-            //console.log(worldState.dialogBox);
-            console.log("page: " + worldState.dialogCurrent);
+
+        if(worldState.dialogBox[worldState.dialogCurrent]){
+            if(worldState.dialogBox){
+                console.log(worldState.dialogBox[worldState.dialogCurrent]);
+                text = worldState.dialogBox[0]
+                ctx.font = fontSize + " " + font;
+                ctx.fillStyle = "#000000"
+                ctx.fillText(text, position[0], position[1]);
+            }
         }
 
-        //ctx.font = fontSize + " " + font;
-        //ctx.fillText(text, position[0], position[1]);
+        
     }
 
     setBackground = (canvas, backgroundColor) => {

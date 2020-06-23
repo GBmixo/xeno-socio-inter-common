@@ -14,7 +14,7 @@ class MainPage extends React.Component{
                 //This is generally what I'm imagining the level-object structure is going to be like
                 //This information should be enough to render an image on the canvas with a spot to look out for
                 pikePlaceMarket:[
-                    {name: "testObject", position: "12 14", size: "360 20", sprite: "?"},
+                    //{name: "testObject", position: "12 140", size: "360 20", sprite: "?"},
                     {name: "testObject2", position: "100 20", size: "40 400", sprite: "?"},
                     {name: "Clark", position: "300 122", size: "90 200", sprite: "?", context: "talk", color: "#FFFFFF"}
                 ]
@@ -39,9 +39,13 @@ class MainPage extends React.Component{
         let levels = this.state.levels;
         let object = levels[worldState.currentCity][worldState.currentSpot][index];
         if(context == "talk"){
+            //unrender and wait until state is updated
             let oldState = this.state;
-            oldState.dialogBox = Dialog(object.name);
-            
+            oldState.everythingLoaded = false;
+            this.setState(oldState);
+
+            oldState.worldState.dialogBox = Dialog(object.name);
+            oldState.everythingLoaded = true;
             this.setState(oldState);
             console.log(this.state);
         }
@@ -53,7 +57,7 @@ class MainPage extends React.Component{
 
         return(
             <div>
-                < GameCanvas onClick={this.handleClick} levelObjects={levelObjects} worldState={this.state.worldState} fuck={this.state.fuck} />
+                < GameCanvas key={GameCanvas} onClick={this.handleClick} levelObjects={levelObjects} worldState={this.state.worldState} fuck={this.state.fuck} />
             </div>
         );
     }
