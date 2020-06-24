@@ -26,7 +26,7 @@ class MainPage extends React.Component{
             currentSpot: "pikePlaceMarket",
             //this sets the dialog appearing onscreen
             dialogBox: [],
-            dialogCurrent: 0,
+            dialogCurrent: -1,
             //These aren't permanent or set in stone but for testing interactions and how they are recorded
             peopleTalkedTo: 0,
             informationCollected: 0,
@@ -46,32 +46,29 @@ class MainPage extends React.Component{
         }
     }
 
-    npcTalk = (object) => {
+    npcTalk = (object, specs=null) => {
 
-        //prepares shortened variables for readability
+        //prepares shortened variable for readability
         let oldState = this.state;
-        let dialogBox = oldState.worldState.dialogBox;
-        let dialogCurrent = oldState.worldState.dialogCurrent;
         //unrender and wait until state is updated
         oldState.everythingLoaded = false;
         this.setState(oldState);
 
         //Finds the dialog array in the Dialog object file and sets it as the dialogBox
-        dialogBox = Dialog(object.name);
-        console.log(dialogBox)
-        //If there's a dialog line to render...
-        if(dialogBox[dialogCurrent]){
-            console.log(dialogCurrent)
-            if (dialogBox[dialogCurrent + 1]){
-                //Increase the dialogCurrent by 1 to use as the new index
-                dialogCurrent += 1;
-            }else{
-                console.log("resetting the dialogCurrent")
-                //console.log(dialogBox[dialogCurrent])
-                //dialogCurrent = 0;
-                //dialogBox = [];
-                
-            }
+        oldState.worldState.dialogBox = Dialog(object.name, specs);
+        //If there's a dialog line at the next index to render...
+        if(oldState.worldState.dialogBox[oldState.worldState.dialogCurrent + 1]){
+            console.log(oldState.worldState.dialogCurrent)
+
+            //add 1 to the current dialog index
+            oldState.worldState.dialogCurrent += 1;
+
+        //if there isn't any lines next...
+        }else{
+            console.log('no more lines')
+            //reset the values to go back
+            oldState.worldState.dialogCurrent = -1;
+            oldState.worldState.dialogBox = [];
         }
         
         //gives the okay for the element to re-render
