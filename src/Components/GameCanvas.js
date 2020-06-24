@@ -32,7 +32,7 @@ class GameCanvas extends React.Component{
         })
 
         this.renderCanvasObjects(ctx)
-        this.renderDialog(ctx, this.props.worldState.dialogBox[this.props.worldState.dialogCurrent], [30, 30]);
+        this.renderDialog(ctx, this.props.worldState.dialogBox[this.props.worldState.dialogCurrent], [30, 50]);
         
     }
 

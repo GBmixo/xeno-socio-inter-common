@@ -14,9 +14,7 @@ class MainPage extends React.Component{
                 //This is generally what I'm imagining the level-object structure is going to be like
                 //This information should be enough to render an image on the canvas with a spot to look out for
                 pikePlaceMarket:[
-                    //{name: "testObject", position: "12 140", size: "360 20", sprite: "?"},
-                    {name: "testObject2", position: "100 20", size: "40 400", sprite: "?"},
-                    {name: "Clark", position: "300 122", size: "90 200", sprite: "?", context: "talk", color: "#FFFFFF"}
+                    {name: "Clark", position: "300 122", size: "90 200", sprite: "?", context: "talk", color: "#33AAFF"}
                 ]
             }
         },
@@ -50,25 +48,31 @@ class MainPage extends React.Component{
 
         //prepares shortened variable for readability
         let oldState = this.state;
+        let currentSpot = oldState.levels [oldState.worldState.currentCity] [oldState.worldState.currentSpot]
         //unrender and wait until state is updated
         oldState.everythingLoaded = false;
         this.setState(oldState);
+
+        //checks if there's a text and if there isn't, make one in the object list
+        if(!oldState.levels [oldState.worldState.currentCity] [oldState.worldState.currentSpot] .find(obj => obj.name == "textBox")){
+            let objectArray = oldState.levels [oldState.worldState.currentCity] [oldState.worldState.currentSpot];
+            objectArray.push({name: "textBox", position: "20 20", size: "600 90", sprite: "?", color: "#FFFFFF"});
+        }
 
         //Finds the dialog array in the Dialog object file and sets it as the dialogBox
         oldState.worldState.dialogBox = Dialog(object.name, specs);
         //If there's a dialog line at the next index to render...
         if(oldState.worldState.dialogBox[oldState.worldState.dialogCurrent + 1]){
-            console.log(oldState.worldState.dialogCurrent)
-
             //add 1 to the current dialog index
             oldState.worldState.dialogCurrent += 1;
 
         //if there isn't any lines next...
         }else{
-            console.log('no more lines')
             //reset the values to go back
             oldState.worldState.dialogCurrent = -1;
             oldState.worldState.dialogBox = [];
+            let textBoxIndex = currentSpot.findIndex(obj => obj.name == "textBox", 1);
+            currentSpot.splice(textBoxIndex, 1);
         }
         
         //gives the okay for the element to re-render
