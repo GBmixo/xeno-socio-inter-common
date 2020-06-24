@@ -10,8 +10,6 @@ class GameCanvas extends React.Component{
     }
 
     prepareCanvasObjects = () => {
-        console.log('preparing to render');
-        //console.log(this.props);
         //The reference to the canvas and other info tied to variables
         const canvas = this.refs.canvas;
         const ctx = canvas.getContext("2d");
@@ -27,7 +25,10 @@ class GameCanvas extends React.Component{
             object.y =  (e.clientY - rect.top);
             //Calculates whether the click touched an object
             let collision = CheckClickCollision(this.props.levelObjects, object.x, object.y);
-            this.checkContext(collision[0], collision[1])
+
+            if(collision){
+                this.checkContext(collision[0], collision[1]);
+            }
         })
 
         this.renderCanvasObjects(ctx)
@@ -60,11 +61,12 @@ class GameCanvas extends React.Component{
 
         if(worldState.dialogBox[worldState.dialogCurrent]){
             if(worldState.dialogBox){
-                console.log(worldState.dialogBox[worldState.dialogCurrent]);
-                text = worldState.dialogBox[0]
+                //console.log(worldState.dialogBox[worldState.dialogCurrent]);
+                text = worldState.dialogBox[worldState.dialogCurrent]
                 ctx.font = fontSize + " " + font;
-                ctx.fillStyle = "#000000"
+                ctx.fillStyle = "#000000";
                 ctx.fillText(text, position[0], position[1]);
+
             }
         }
 

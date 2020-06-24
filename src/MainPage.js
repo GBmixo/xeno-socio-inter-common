@@ -35,20 +35,49 @@ class MainPage extends React.Component{
     }
 
     handleClick = (index, context) => {
+        //readability variables
         let worldState = this.state.worldState;
         let levels = this.state.levels;
+        //Finds the object in the state by the given index
         let object = levels[worldState.currentCity][worldState.currentSpot][index];
         if(context == "talk"){
-            //unrender and wait until state is updated
-            let oldState = this.state;
-            oldState.everythingLoaded = false;
-            this.setState(oldState);
-
-            oldState.worldState.dialogBox = Dialog(object.name);
-            oldState.everythingLoaded = true;
-            this.setState(oldState);
-            console.log(this.state);
+            //runs the npcTalk script
+            this.npcTalk(object);
         }
+    }
+
+    npcTalk = (object) => {
+
+        //prepares shortened variables for readability
+        let oldState = this.state;
+        let dialogBox = oldState.worldState.dialogBox;
+        let dialogCurrent = oldState.worldState.dialogCurrent;
+        //unrender and wait until state is updated
+        oldState.everythingLoaded = false;
+        this.setState(oldState);
+
+        //Finds the dialog array in the Dialog object file and sets it as the dialogBox
+        dialogBox = Dialog(object.name);
+        console.log(dialogBox)
+        //If there's a dialog line to render...
+        if(dialogBox[dialogCurrent]){
+            console.log(dialogCurrent)
+            if (dialogBox[dialogCurrent + 1]){
+                //Increase the dialogCurrent by 1 to use as the new index
+                dialogCurrent += 1;
+            }else{
+                console.log("resetting the dialogCurrent")
+                //console.log(dialogBox[dialogCurrent])
+                //dialogCurrent = 0;
+                //dialogBox = [];
+                
+            }
+        }
+        
+        //gives the okay for the element to re-render
+        oldState.everythingLoaded = true;
+        this.setState(oldState);
+        //console.log(this.state);
     }
 
     renderCanvas(){
