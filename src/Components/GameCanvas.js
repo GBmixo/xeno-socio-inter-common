@@ -1,4 +1,6 @@
 import React from 'react';
+import Alien from '../alien-mirror/side-2.png'
+import Pike from '../other-images/pike_place.jpg'
 
 
 class GameCanvas extends React.Component{
@@ -14,8 +16,35 @@ class GameCanvas extends React.Component{
         const canvas = this.refs.canvas;
         const ctx = canvas.getContext("2d");
         const rect = canvas.getBoundingClientRect();
+
+
+        //PIKE BG
+        var bg = new Image()
+        bg.onload = function () {
+            ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+            loadAlien();
+        };
+        bg.src = Pike
+        
         //Sets a BG color
-        this.setBackground(canvas, "#4B4B55");
+        this.setBackground(canvas, bg);
+
+
+        
+        var loadAlien = function (){
+            var context = canvas.getContext('2d');
+            var image = new Image();
+            image.onload = function () {
+                //this is the coordinates to talk to starbucks 
+                context.drawImage(image, 700, 270, canvas.width/8, canvas.height/4);
+            };
+            image.src = Alien;
+
+        }
+        //this gets an image on the canvas on load
+
+
+
 
         //This is the event listener for the clicks that check for collision with game elements
         canvas.addEventListener('click', e => {
@@ -28,7 +57,7 @@ class GameCanvas extends React.Component{
         })
 
         this.props.levelObjects.map(obj => {
-
+            
             //Seperates the data into individual numbers
             let pos = obj.position.split(' ');
             let dimensions = obj.size.split(' ');
@@ -37,7 +66,7 @@ class GameCanvas extends React.Component{
             //Creates a rectangle with the fillStyle
             ctx.fillRect(pos[0],pos[1],dimensions[0],dimensions[1]);
         })
-        
+        return 'click'
     }
 
     setBackground = (canvas, backgroundColor) => {
@@ -45,7 +74,7 @@ class GameCanvas extends React.Component{
     }
 
     checkCollision = (clickX, clickY) => {
-        //console.log(clickX + ' ' + clickY)
+        console.log(clickX + ' ' + clickY)
         let objects = this.props.levelObjects;
         for(let i = 0; i < objects.length; i++){
             let pos = objects[i].position.split(' ');
@@ -73,7 +102,7 @@ class GameCanvas extends React.Component{
     render(){
         return(
             <div>
-                <canvas ref="canvas" width={750} height={450} />
+                <canvas ref="canvas" width={1000} height={700} />
             </div>
         )
     }

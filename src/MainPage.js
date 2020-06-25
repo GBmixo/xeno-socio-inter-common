@@ -63,7 +63,6 @@ class MainPage extends React.Component{
                         
                     </div>
                 </Router>
-               
             )
     }
 
