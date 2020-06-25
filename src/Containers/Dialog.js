@@ -4,6 +4,11 @@ const Dialog = (name, specs=null) => {
             "spokenTo": 0,
             "firstMeeting": ["Hi, I'm Clark. Nice to meet you!", "You look like a cool fella!", "Well, see ya bud."],
             "chat": ["Hey, Guess what?", "I just found that you can win the game instantly!", "Just press that there button that says 'WIN'."]
+        },
+        "Dlark": {
+            "spokenTo": 0,
+            "firstMeeting": ["Hi, I'm Dlark. Nice to meet you!", "You look like a cool fella!", "Well, see ya bud."],
+            "chat": ["Hey, Guess what?", "I just found that you can win the game instantly!", "Just press that there button that says 'WIN'."]
         }
     }
 

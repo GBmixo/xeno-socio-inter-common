@@ -2,7 +2,7 @@ import React from 'react';
 import CheckClickCollision from './CheckClickCollision.js';
 
 
-class GameCanvas extends React.Component{
+class SceneCanvas extends React.Component{
 
     componentDidMount = () => {
         //Renders the canvas with game objects
@@ -55,29 +55,13 @@ class GameCanvas extends React.Component{
         })
     }
 
-    renderDialog = (ctx, text, position, fontSize="30px", font="Arial") => {
-        let worldState = this.props.worldState;
-        console.log(this.props.worldState);
-
-        if(worldState.dialogBox[worldState.dialogCurrent]){
-                text = worldState.dialogBox[worldState.dialogCurrent]
-                ctx.font = fontSize + " " + font;
-                ctx.fillStyle = "#000000";
-                ctx.fillText(text, position[0], position[1]);
-        }
-
-        
-    }
-
     setBackground = (canvas, backgroundColor) => {
         canvas.style.background = backgroundColor;
     }
 
     checkContext = (index, object) => {
         switch(object.context){
-            case "talk": this.props.onClick(index, 'talk')
-            break;
-            case "read": this.props.onClick(index, 'read')
+            case "talkTo": this.props.onClick(index, 'talkTo')
             break;
             case "pickup": this.props.onClick(index, 'pickup')
             break;
