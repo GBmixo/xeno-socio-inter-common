@@ -52,10 +52,22 @@ class MainPage extends React.Component{
             return (
                 <Router>
                     <div>
-                        <div>
-                            <Link to="/">Main</Link>
-                        </div>
+                        <nav>
+                            <ul>
+                                <li>
+                                    <div>
+                                        <Link to="/">Main</Link>
+                                    </div>
+                                    <div>
+                                        <Link to="/scene">Scene</Link>
+                                    </div>
+                                </li>
+                            </ul>
+                        </nav>
                         <Switch>
+                            <Route path='/scene' exact>
+                                {this.state.everythingLoaded ? this.renderCanvas() : null}
+                            </Route>
                             <Route path='/' exact>
                                 {this.state.everythingLoaded ? this.renderCanvas() : null}
                             </Route>

@@ -16,21 +16,23 @@ class GameCanvas extends React.Component{
         const canvas = this.refs.canvas;
         const ctx = canvas.getContext("2d");
         const rect = canvas.getBoundingClientRect();
-
-
         //PIKE BG
         var bg = new Image()
         bg.onload = function () {
             ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
-            loadAlien();
+
+        // THIS NEEDS TO GO SOMEWHERE ELSE
+            loadAlien()
         };
-        bg.src = Pike
-        
-        //Sets a BG color
+
+
+        //LIGHTSWITCH
+        // bg.src = Pike
         this.setBackground(canvas, bg);
-
-
         
+        
+        
+        //this gets an image on the canvas on load
         var loadAlien = function (){
             var context = canvas.getContext('2d');
             var image = new Image();
@@ -39,13 +41,12 @@ class GameCanvas extends React.Component{
                 context.drawImage(image, 700, 270, canvas.width/8, canvas.height/4);
             };
             image.src = Alien;
-
+            
         }
-        //this gets an image on the canvas on load
-
-
-
-
+        
+        
+        
+        
         //This is the event listener for the clicks that check for collision with game elements
         canvas.addEventListener('click', e => {
             let object = {};
@@ -54,25 +55,43 @@ class GameCanvas extends React.Component{
             object.y =  (e.clientY - rect.top);
             //Calculates whether the click touched an object
             this.checkCollision(object.x, object.y);
+            console.log(object, 'object')
         })
-
+        
         this.props.levelObjects.map(obj => {
             
             //Seperates the data into individual numbers
             let pos = obj.position.split(' ');
             let dimensions = obj.size.split(' ');
             //Sets the rectangle color
-            ctx.fillStyle = "#FFFF33";
+            ctx.fillStyle = "#212F3C";
             //Creates a rectangle with the fillStyle
-            ctx.fillRect(pos[0],pos[1],dimensions[0],dimensions[1]);
+            ctx.fillRect(pos[1],pos[0],dimensions[1],dimensions[1]);
+            // return 'CLICK'
+
+            var draw = function(){
+
+                    ctx.beginPath();
+                    ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
+                    ctx.moveTo(110, 75);
+                    ctx.arc(75, 75, 35, 0, Math.PI, false);  // Mouth (clockwise)
+                    ctx.moveTo(65, 65);
+                    ctx.arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
+                    ctx.moveTo(95, 65);
+                    ctx.arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
+                    ctx.stroke();
+                
+            }
+            draw()
+
         })
         return 'click'
     }
-
+    
     setBackground = (canvas, backgroundColor) => {
         canvas.style.background = backgroundColor;
     }
-
+    
     checkCollision = (clickX, clickY) => {
         console.log(clickX + ' ' + clickY)
         let objects = this.props.levelObjects;
