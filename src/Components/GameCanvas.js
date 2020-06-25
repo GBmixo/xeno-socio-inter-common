@@ -17,8 +17,8 @@ class GameCanvas extends React.Component{
         const canvas = this.refs.canvas;
         const ctx = canvas.getContext("2d");
         const rect = canvas.getBoundingClientRect();
-        //PIKE BG
         var bg = new Image()
+
         bg.onload = function () {
             ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
 
@@ -28,9 +28,8 @@ class GameCanvas extends React.Component{
 
 
         //LIGHTSWITCH
-        // bg.src = Pike
+        bg.src = Pike
         this.setBackground(canvas, bg);
-        
         
         
         //this gets an image on the canvas on load
@@ -57,19 +56,19 @@ class GameCanvas extends React.Component{
             //Calculates whether the click touched an object
 
             this.checkCollision(object.x, object.y);
-            console.log(object, 'object')
+            // console.log(object, 'object')
         })
         
-=======
-            let collision = CheckClickCollision(this.props.levelObjects, object.x, object.y);
+    //         let collision = CheckClickCollision(this.props.levelObjects, object.x, object.y);
 
-            if(collision){
-                this.checkContext(collision[0], collision[1]);
-            }
-        })
+    //         if(collision){
+    //             this.checkContext(collision[0], collision[1]);
+    //         }
+    //         return 'click';
+    //     }
 
-        this.renderCanvasObjects(ctx)
-        this.renderDialog(ctx, this.props.worldState.dialogBox[this.props.worldState.dialogCurrent], [30, 50]);
+    //     this.renderCanvasObjects(ctx)
+    //     this.renderDialog(ctx, this.props.worldState.dialogBox[this.props.worldState.dialogCurrent], [30, 50]);
         
     }
 
